@@ -557,4 +557,4 @@ Fix: Add the domain to M365 Admin Center → Settings → Domains and verify wit
 
 ## PowerShell Commands Reference
 
-See [scripts/teams-commands.ps1](scripts/teams-commands.ps1) for all commands.
+See [teams-commands.ps1](teams-commands.ps1) for all commands.
