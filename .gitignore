@@ -1,0 +1,18 @@
+# Certificates and keys - never commit these!
+*.pem
+*.key
+*.crt
+*.pfx
+*.p12
+
+# AWS credentials
+.aws/
+credentials
+
+# Windows
+Thumbs.db
+Desktop.ini
+
+# Editor files
+.vscode/
+*.swp
