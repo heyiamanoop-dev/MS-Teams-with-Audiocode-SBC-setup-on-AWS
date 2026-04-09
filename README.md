@@ -12,7 +12,7 @@ A complete step-by-step lab guide for migrating company extensions to Microsoft 
 │                                 │         │                                 │
 │  ┌───────────────────────────┐  │         │  ┌───────────────────────────┐  │
 │  │  AudioCodes Mediant VE    │  │◄───────►│  │     Microsoft Teams       │  │
-│  │  SBC (m7i-flex.large)     │  │SIP TLS  │  │   Direct Routing (E5)    │  │
+│  │  SBC (m7i-flex.large)     │  │SIP TLS  │  │   Direct Routing (E5)     │  │
 │  │  mylab-sbc.ddns.net       │  │Port 5061│  │                           │  │
 │  └───────────────────────────┘  │         │  └───────────────────────────┘  │
 │         Elastic IP              │         │                                 │
