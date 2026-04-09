@@ -393,7 +393,7 @@ Navigate to **Signaling & Media → Media → Media Security**:
 1. Go to **Settings → Domains → Add Domain**
 2. Enter `mylab-sbc.ddns.net`
 3. Choose **TXT verification**  
-4. Add the TXT record(if needed add MX and CNAME) in No-IP (same process as Let's Encrypt) 
+4. Add the TXT record(if needed add MX and CNAME as shown in the step 2.1) in No-IP (same process as Let's Encrypt) 
 5. Click **Verify**
 
 > ⚠️ You only need the TXT record verified. MX and CNAME errors for
