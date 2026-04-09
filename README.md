@@ -102,7 +102,7 @@ A complete step-by-step lab guide for migrating company extensions to Microsoft 
 
 ---
 
-## Phase 2 — FQDN Setup with No-IP
+## Phase 2 — FQDN Setup with No-IP  (check -> NOIP DNS config.png)
 
 ### 2.1 Create No-IP Account and Hostname
 
@@ -373,7 +373,7 @@ Navigate to **Signaling & Media → Media → Media Security**:
 > ⚠️ **Do NOT use M365 Business Standard** — it does not include Phone System (MCOEV).
 > E5 includes Phone System built-in. No separate Teams Phone license needed.
 
-### 5.2 Create Test Users
+### 5.2 Create Test Users (check -> MS Teams Active users.png)
 
 1. Go to **Admin Center → Users → Active Users → Add a user**
 2. Create two users:
@@ -388,7 +388,7 @@ Navigate to **Signaling & Media → Media → Media Security**:
 4. Click **Save changes**
 5. Repeat for second user
 
-### 5.4 Add Domain to M365
+### 5.4 Add Domain to M365 (Check -> Adding Domain to 365.png)
 
 1. Go to **Settings → Domains → Add Domain**
 2. Enter `mylab-sbc.ddns.net`
