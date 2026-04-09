@@ -553,6 +553,35 @@ Error: `Can not use the domain as it was not configured for this tenant`
 
 Fix: Add the domain to M365 Admin Center → Settings → Domains and verify with TXT record
 
+### Change Password using Cli
+1. Login to SBC using putty with EC2 instance Public IP
+2. Enter 'enable' mode
+
+Mediant SW> enable
+Password:
+
+3. Enter password as 'Admin'
+4. Enter configure system
+
+Mediant SW# configure system
+
+Mediant SW(config-system)# 
+
+5. then enter User admin
+
+Mediant SW(config-system)# user Admin
+Configure existing user Admin
+
+Mediant SW(user-Admin)# 
+
+6. Type password command to add new password
+
+Mediant SW(user-Admin)# Password
+
+7. Enter new password and then enter, it will save new password. Now login using 'Admin' as username with new password.
+
+------------------------------------------------
+
 ---
 
 ## PowerShell Commands Reference
