@@ -208,6 +208,8 @@ After successful generation, you will have:
 
 ## Phase 4 — AudioCodes SBC Configuration
 
+You can watch a youtube video for direct configuration for MS teams. Link: https://www.youtube.com/watch?v=reUN9CNPVv4
+
 ### 4.1 Initial Setup Wizard
 
 After first login, complete the Setup Wizard:
