@@ -367,7 +367,7 @@ Navigate to **Signaling & Media → CORE ENTITIES → IP Groups**:
 | Topology location | `UP` |
 | Type | `Server` |
 | Proxy Set | `Teams Proxyset` |
-| IP Profile | `Teams Teams IP Profile` |   -- First do Ip Profile section before doing this
+| IP Profile | **`Teams Teams IP Profile`** ← First do Ip Profile section before doing this! | 
 | Media Realm | `Teams Media Realms` |
 | SIP Group Name | `mylab-sbc.ddns.net` |
 | Local Host Name | `mylab-sbc.ddns.net` |
@@ -384,7 +384,7 @@ Navigate to **Signaling & Media → CORE ENTITIES → IP Groups**:
 | Topology location | `Down` |
 | Type | `Server` |
 | Proxy Set | `FreePBX proxyset` |
-| IP Profile | `FreePBX IP Profile` |   -- First do Ip Profile section before doing this
+| IP Profile | **`FreePBX Teams IP Profile`** ← First do Ip Profile section before doing this! | 
 | Media Realm | `FreePBX Media Realms` |
 | SIP Group Name | `mylab-sbc.ddns.net` |
 | Local Host Name | `mylab-sbc.ddns.net` |
