@@ -272,7 +272,7 @@ Navigate to **Signaling & Media → SIP Definitions → Transport Settings**:
 
 Navigate to **Signaling & Media → CORE ENTITIES → SIP Interfaces**:
 
-For teams: 
+**For teams**: 
 
 | Field | Value |
 |---|---|
@@ -285,7 +285,7 @@ For teams:
 | TLS Context Name | `default` |
 | Topology Location | `Up` |
 
-For FreePBX
+**For FreePBX**:
 
 | Field | Value |
 |---|---|
@@ -298,39 +298,64 @@ For FreePBX
 | TLS Context Name | `default` |
 | Topology Location | `Up` |
 
-### 4.7 Proxy Sets
+### 4.7 Media Realms
+
+Navigate to **Signaling & Media → CORE ENTITIES → Proxy Sets**:
+
+**Teams Media Realms**:
+
+| Field | Value |
+|---|---|
+| Name | `Teams Media Realms` |
+| Topology location | `UP` |
+| IPv4 Interface Name | `eth0` |
+| UDP Port Range Start | `7000` |
+| Number Of Media Session Legs | `100` |
+
+**FreePBX Media Realms**:
+
+| Field | Value |
+|---|---|
+| Name | `FreePBX Media Realms` |
+| Topology location | `Down` |
+| IPv4 Interface Name | `eth0` |
+| UDP Port Range Start | `8000` |
+| Number Of Media Session Legs | `100` |
+
+### 4.8 Proxy Sets
 
 Navigate to **Signaling & Media → SBC → Proxy Sets**:
 
-**Proxy Set #1 — IP-PBX (FreePBX/Internal)**:
+**Proxy Set #1 — Teams Proxyset**:
 
 | Field | Value |
 |---|---|
-| Name | `IP-PBX` |
-| SBC IPv4 SIP Interface | `sipInterface1` |
-| Proxy Address | FreePBX private IP:5060 |
-| Transport Type | `UDP` |
-| Keep Alive | `Disable` |
-
-**Proxy Set #2 — ITSP (Microsoft Teams)**:
-
-| Field | Value |
-|---|---|
-| Name | `ITSP` |
-| SBC IPv4 SIP Interface | `sipInterface1` |
+| Name | `Teams Proxyset` |
+| SBC IPv4 SIP Interface | `Teams sip interface` |
+| TLS Context Name | default |
+| Proxy Address | `sip.pstnhub.microsoft.com:5061`, `sip2.pstnhub.microsoft.com:5061`, `sip3.pstnhub.microsoft.com:5061` |
+| Proxy Priority | 1,2,3 respectively based on Proxy Address |
+| Transport Type | `TLS` |
 | Proxy Keep Alive | `Using OPTIONS` |
-| Proxy Keep Alive Time | `60` |
-| Redundancy Mode | `Homing` |
-| Proxy Hot Swap | `Enable` |
+| Redundancy Mode | `Homing` |	
+| Proxy Hot Swap Mode | `Enable` |	
+| Proxy Load Balancing Method | `Random Weights` |
+| TLS Remote Subject Name | `sip.pstnhub.microsoft.com` |
 
-Proxy Addresses for ITSP:
-| Address | Port | Transport |
-|---|---|---|
-| `sip.pstnhub.microsoft.com` | `5061` | `TLS` |
-| `sip2.pstnhub.microsoft.com` | `5061` | `TLS` |
-| `sip3.pstnhub.microsoft.com` | `5061` | `TLS` |
+**Proxy Set #2 — FreePBX Proxyset**:
 
-### 4.8 IP Groups
+| Field | Value |
+|---|---|
+| Name | `FreePBX Proxyset` |
+| SBC IPv4 SIP Interface | `FreePBX SIP Interface` |
+| Proxy Address | `172.31.2.162:5060` |
+| Proxy Priority | 0 |
+| Transport Type | `UDP` |
+| Proxy Keep Alive | `Using OPTIONS` |
+| Proxy Hot Swap Mode | `Disable` |	
+| Proxy Load Balancing Method | `Disable` |
+
+### 4.9 IP Groups
 
 Navigate to **Signaling & Media → SBC → IP Groups**:
 
