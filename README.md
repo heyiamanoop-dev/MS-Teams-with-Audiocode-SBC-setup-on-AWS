@@ -510,7 +510,7 @@ Check AudioCodes:
    - Success Count: **increasing**
    - Failure Count: **0**
 
-### 7.2 Test Call
+### 7.2 Test Call [Test call Between MS Teams and freePBX.pdf](Test call Between MS Teams and freePBX.pdf)
 
 1. Open Teams as User A
 2. Go to **Calls → Dial Pad**
