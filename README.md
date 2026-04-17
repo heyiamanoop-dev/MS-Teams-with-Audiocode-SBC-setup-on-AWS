@@ -392,7 +392,42 @@ Navigate to **Signaling & Media → CORE ENTITIES → IP Groups**:
 | Teams Direct Routing Mode | `Disable` |
 | Teams Local Media Optimization Initial Behavior | `DirectMedia` |
 
-### 4.9 IP-to-IP Routing
+### 4.10 IP Profiles
+
+Navigate to **Signaling & Media → CODERS & PROFILES → IP Profiles**:
+
+**IP Profile #1 — Teams IP Profile**:
+
+| Field | Value |
+|---|---|
+| Name | `Teams IP Profile` |
+| SBC Media Security Mode | `Secured` |
+| Remote Early Media RTP Detection Mode	 | `By Media` |
+| Extension Coders Group | **`AudioCodersGroups_0`** ← First do Coders Settings section before doing this!|
+| ICE Mode| `Lite` | 
+| SIP UPDATE Support | `Not Supported` |
+| Remote re-INVITE | `Supported only with SDP` |
+| Remote Delayed Offer Support | `Not Supported` |
+| Max Call Duration [min] | `0` |
+
+**IP Profile # — FreePBX IP Profile**:
+
+| Field | Value |
+|---|---|
+| Name | `FreePBX IP Profile` |
+| SBC Media Security Mode | `Not Secured` |
+| Remote Early Media RTP Detection Mode	 | `By Signaling` |
+| ICE Mode| `Disabled` | 
+| P-Asserted-Identity Header Mode	 | `Add` |
+| SIP UPDATE Support | `Supported` |
+| Remote re-INVITE | `Supported` |
+| Remote Delayed Offer Support | `Supported` |
+| Max Call Duration [min] | `60` |
+| Remote REFER Mode | `Handle Locally` |
+| Remote Replaces Mode | `Handle Locally` |
+| Remote 3xx Mode | `Handle Locally` |
+
+### 4.11 IP-to-IP Routing
 
 Navigate to **Signaling & Media → SBC → Routing → IP-to-IP Routing**:
 
@@ -401,7 +436,7 @@ Navigate to **Signaling & Media → SBC → Routing → IP-to-IP Routing**:
 | 10 | `IP-PBX → ITSP` | `IP-PBX` | `ITSP` |
 | 20 | `ITSP → IP-PBX` | `ITSP` | `IP-PBX` |
 
-### 4.10 Media Security
+### 4.12 Media Security
 
 Navigate to **Signaling & Media → Media → Media Security**:
 
