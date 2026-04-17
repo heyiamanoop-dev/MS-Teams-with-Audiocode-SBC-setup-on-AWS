@@ -410,7 +410,7 @@ Navigate to **Signaling & Media → CODERS & PROFILES → IP Profiles**:
 | Remote Delayed Offer Support | `Not Supported` |
 | Max Call Duration [min] | `0` |
 
-**IP Profile # — FreePBX IP Profile**:
+**IP Profile #2 — FreePBX IP Profile**:
 
 | Field | Value |
 |---|---|
@@ -432,6 +432,33 @@ Navigate to **Signaling & Media → CODERS & PROFILES → IP Profiles**:
 Navigate to **Signaling & Media → CODERS & PROFILES → Coders Groups**:
 
 ** Select which codecs are supported, here its G711 ulaw and alaw**
+
+### 4.12 Classifications
+
+Navigate to **Signaling & Media → SBC → Classification**:
+
+**Classification #1 — Teams-Classification**:
+
+| Field | Value |
+|---|---|
+| Name | `Teams-Classification` |
+| Source SIP Interface | `Teams sip Interface` |
+| Source IP Address	 | `52.114.*.*` |
+| Source Transport Type | `TLS` | 
+| Destination Host	 | `mylab-sbc.ddns.net` |
+| Message Condition | `Teams-contact` |
+| TLS Remote Subject Name | `*.pstnhub.microsoft.com` |
+| Source IP Group | `Teams IP Group` |
+
+**Classification #2 — FreePBX-Classification**:
+
+| Field | Value |
+|---|---|
+| Name | `FreePBX-Classification` |
+| Source SIP Interface | `FreePBX SIP Interface` |
+| Source IP Address	 | `172.31.2.162` |
+| Source Transport Type | `Any` | 
+| Source IP Group | `FreePBX IP Group` |
 
 ### 4.11 IP-to-IP Routing
 
