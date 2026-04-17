@@ -225,6 +225,8 @@ After first login, complete the Setup Wizard:
 
 ### 4.2 IP Network Interface
 
+Since we are using VPC to connect both FreePBX and SBC, no need to create for WAN network for MS Teams.  
+
 Navigate to **IP Network → IP Interfaces**:
 
 | Field | Value |
