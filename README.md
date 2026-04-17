@@ -12,7 +12,7 @@ A complete step-by-step lab guide for migrating company extensions to Microsoft 
 │                                 │         │                                 │
 │  ┌───────────────────────────┐  │         │  ┌───────────────────────────┐  │
 │  │  AudioCodes Mediant VE    │  │◄───────►│  │     Microsoft Teams       │  │
-│  │  SBC (m7i-flex.large)     │  │SIP TLS  │  │   Direct Routing (E5)     │  │
+│  │  SBC (t3.small)           │  │SIP TLS  │  │   Direct Routing (E5)     │  │
 │  │  mylab-sbc.ddns.net       │  │Port 5061│  │                           │  │
 │  └───────────────────────────┘  │         │  └───────────────────────────┘  │
 │         Elastic IP              │         │                                 │
@@ -225,7 +225,7 @@ After first login, complete the Setup Wizard:
 
 ### 4.2 IP Network Interface
 
-Since we are using VPC to connect both FreePBX and SBC, no need to create for WAN network for MS Teams.  
+Since, we are using VPC to connect both FreePBX and SBC, no need to create for WAN network for MS Teams.  
 
 Navigate to **IP Network → IP Interfaces**:
 
@@ -243,8 +243,8 @@ Navigate to **IP Network → NAT Translation → Add**:
 
 | Entry | Source Interface | Target IP | Source Ports |
 |---|---|---|---|
-| 1 | eth0 | `<ElasticIP>` | 7000-7999 (RTP) |
-| 2 | eth0 | `<ElasticIP>` | 5061-5061 (SIP) |
+| 1 | eth0 | `<ElasticIP of SBC>` | 7000-7999 (RTP) |
+| 2 | eth0 | `<ElasticIP of SBC>` | 5061-5061 (SIP) |
 
 ### 4.4 Upload TLS Certificate
 
