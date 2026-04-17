@@ -246,7 +246,7 @@ Navigate to **IP Network → NAT Translation → Add**:
 | 1 | eth0 | `<ElasticIP of SBC>` | 7000-7999 (RTP) |
 | 2 | eth0 | `<ElasticIP of SBC>` | 5061-5061 (SIP) |
 
-### 4.4 Upload TLS Certificate
+### 4.4 Upload TLS Certificate (See step 3.5)
 
 1. Go to **IP Network → Security → TLS Contexts → #0 [default]**
 2. Click **"Change Certificate >>"**
@@ -270,10 +270,26 @@ Navigate to **Signaling & Media → SIP Definitions → Transport Settings**:
 
 ### 4.6 SIP Interface
 
-Navigate to **Signaling & Media → SIP Definitions → SIP Interfaces**:
+Navigate to **Signaling & Media → CORE ENTITIES → SIP Interfaces**:
+
+For teams: 
 
 | Field | Value |
 |---|---|
+| Name | `Teams sip interface` |
+| Network Interface | `eth0` |
+| Application Type | `SBC` |
+| UDP Port | `5060` |
+| TCP Port | `5060` |
+| TLS Port | `5061` |
+| TLS Context Name | `default` |
+| Topology Location | `Up` |
+
+For FreePBX
+
+| Field | Value |
+|---|---|
+| Name | `FreePBX sip interface` |
 | Network Interface | `eth0` |
 | Application Type | `SBC` |
 | UDP Port | `5060` |
