@@ -427,6 +427,12 @@ Navigate to **Signaling & Media → CODERS & PROFILES → IP Profiles**:
 | Remote Replaces Mode | `Handle Locally` |
 | Remote 3xx Mode | `Handle Locally` |
 
+### 4.11 Coders Groups
+
+Navigate to **Signaling & Media → CODERS & PROFILES → Coders Groups**:
+
+** Select which codecs are supported, here its G711 ulaw and alaw**
+
 ### 4.11 IP-to-IP Routing
 
 Navigate to **Signaling & Media → SBC → Routing → IP-to-IP Routing**:
