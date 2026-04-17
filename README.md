@@ -324,7 +324,7 @@ Navigate to **Signaling & Media → CORE ENTITIES → Proxy Sets**:
 
 ### 4.8 Proxy Sets
 
-Navigate to **Signaling & Media → SBC → Proxy Sets**:
+Navigate to **Signaling & Media → CORE ENTITIES → Proxy Sets**:
 
 **Proxy Set #1 — Teams Proxyset**:
 
@@ -357,29 +357,40 @@ Navigate to **Signaling & Media → SBC → Proxy Sets**:
 
 ### 4.9 IP Groups
 
-Navigate to **Signaling & Media → SBC → IP Groups**:
+Navigate to **Signaling & Media → CORE ENTITIES → IP Groups**:
 
-**IP Group #1 — IP-PBX**:
-
-| Field | Value |
-|---|---|
-| Name | `IP-PBX` |
-| Type | `Server` |
-| Proxy Set | `IP-PBX` |
-| Media Realm | `IP-PBX` |
-| Teams Direct Routing Mode | `Disable` |
-
-**IP Group #2 — ITSP (Teams)**:
+**IP Group #1 — Teams IP Group**:
 
 | Field | Value |
 |---|---|
-| Name | `ITSP` |
+| Name | `Teams IP Group` |
+| Topology location | `UP` |
 | Type | `Server` |
-| Proxy Set | `ITSP` |
+| Proxy Set | `Teams Proxyset` |
+| IP Profile | `Teams Teams IP Profile` |   -- First do Ip Profile section before doing this
+| Media Realm | `Teams Media Realms` |
 | SIP Group Name | `mylab-sbc.ddns.net` |
+| Local Host Name | `mylab-sbc.ddns.net` |
+| Always Use Src Address | `Yes` |
 | Teams Direct Routing Mode | **`Enable`** ← Critical! |
-| Teams Local Media Optimization | `None` |
-| Media Bypass | `Disable` |
+| Teams Local Media Optimization Initial Behavior | `Internal` |
+| Outbound Message Manipulation | `4` |
+
+**IP Group #2 — FreePBX IP Group**:
+
+| Field | Value |
+|---|---|
+| Name | `FreePBX IP Group` |
+| Topology location | `Down` |
+| Type | `Server` |
+| Proxy Set | `FreePBX proxyset` |
+| IP Profile | `FreePBX IP Profile` |   -- First do Ip Profile section before doing this
+| Media Realm | `FreePBX Media Realms` |
+| SIP Group Name | `mylab-sbc.ddns.net` |
+| Local Host Name | `mylab-sbc.ddns.net` |
+| Always Use Src Address | `No` |
+| Teams Direct Routing Mode | `Disable` |
+| Teams Local Media Optimization Initial Behavior | `DirectMedia` |
 
 ### 4.9 IP-to-IP Routing
 
