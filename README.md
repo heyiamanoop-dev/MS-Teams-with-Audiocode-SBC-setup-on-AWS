@@ -556,7 +556,16 @@ Navigate to **Signaling & Media → MESSAGE MANIPULATION → Message Manipulatio
 | Action Type | `Remove` |
 | Condition | `Header.History-Info.1 exists` |
 
-### 4.14 Media Security
+### 4.14 Message Conditions
+
+Navigate to **Signaling & Media → MESSAGE MANIPULATION → Message Conditions**:
+
+| Field | Value |
+|---|---|
+| Name | `Teams-contact` |
+| Condition | `Header.Contact.URL.Host contains 'pstnhub.microsoft.com'` |
+
+### 4.15 Media Security
 
 Navigate to **Signaling & Media → Media → Media Security**:
 
