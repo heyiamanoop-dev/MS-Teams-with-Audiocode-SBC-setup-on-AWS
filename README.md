@@ -759,7 +759,7 @@ Go to **Settings → Asterisk SIP Settings → General Settings**:
 | External Address | FreePBX Elastic IP (if public) or leave if internal |
 | Local Networks | Your AWS VPC subnet e.g. 172.31.0.0/16 |
 
-Then, ** SIP Settings[chan_pjsip] -> Under 0.0.0.0 (udp)**:
+Then, **SIP Settings[chan_pjsip] -> Under 0.0.0.0 (udp)**:
 
 | Field | Value |
 |---|---|
@@ -777,7 +777,7 @@ Go to **Connectivity → Trunks → Add Trunk → Add SIP (chan_pjsip) Trunk **:
 |---|---|
 | Trunk Name | `AudioCodes-SBC` |
 
-Then, ** pjsip settings -> General**:
+Then, **pjsip settings -> General**:
 
 | Field | Value |
 |---|---|
@@ -786,7 +786,7 @@ Then, ** pjsip settings -> General**:
 | Context | `from-pstn` |
 | Transport | `0.0.0.0-udp` |
 
-Then, ** pjsip settings -> Advanced**:
+Then, **pjsip settings -> Advanced**:
 
 | Field | Value |
 |---|---|
@@ -809,7 +809,7 @@ Go to **Applications → Extensions → Add Extensions → Add PJSIP Extension �
 | Rewrite Contact | YES |
 | Media Encryption | `None` |
 
-Then, ** PJSIP Extension -> Advanced**:
+Then, **PJSIP Extension -> Advanced**:
 
 | Field | Value |
 |---|---|
@@ -822,10 +822,47 @@ Then, ** PJSIP Extension -> Advanced**:
 
 Do the same for another extension with Display Name : Teamsuser2 with user extension 102, Then Submit and Apply config.
 
+### 7.4 Create Inbound route
+
+Go to **Connectivity → Inbound route → Add Inbound route →  General**:
+
+| Field | Value |
+|---|---|
+| Description | `From-SBC`|
+| DID Number | `+15550101` - **check the DID number in MS Teams Admin page → Users → Manage Users or Leave Blank to accept all** |
+| Set Destination  | Extensions and 101 Teamsuser1 |
+
+Submit and Apply config.
+
+### 7.4 Create Outbound route
+
+Go to **Connectivity → Outbound route → Add Outbound route →  Route Settings**:
+
+| Field | Value |
+|---|---|
+| Route Name | `To-Teams-via-SBC`|
+| Trunk Sequence for Matched Routes | `AudioCodesSBC` |
+
+Then, **Dial Patterns**:
+
+Add below patterns 
+
+| Pattern | Description |
+|---|---|
+| +NXXXXXXXXXXXX | 11-digit E.164 with + |
+| 1NXXXXXXXXXX | 11-digit with country code |
+| +X. | Any E.164 with + |
+| NXXXXXXXXXX | 10-digit US |
+
+Submit and Apply config. Once the configuration is changed then reload the Asterisk using command:
+```bash
+sudo fwconsole reload `
+```
+
 ---
 ## Phase 8 — Verification and Testing
 
-### 7.1 Verify SBC Connectivity
+### 8.1 Verify SBC Connectivity
 
 Check Teams Admin Center:
 1. Go to **https://admin.teams.microsoft.com**
@@ -836,17 +873,17 @@ Check Teams Admin Center:
 
 Check AudioCodes:
 1. Go to **Monitor → VoIP Status → Proxy Sets Status**
-2. Verify ITSP proxy shows:
+2. Verify both Teams and freePBX proxy shows:
    - Status: **ONLINE**
    - Success Count: **increasing**
    - Failure Count: **0**
 
-### 7.2 Test Call - See [Test call Between MS Teams and freePBX.pdf](https://github.com/user-attachments/files/26834074/Test.call.Between.MS.Teams.and.freePBX.pdf)
+### 8.2 Test Call - See [Test call Between MS Teams and freePBX.pdf](https://github.com/user-attachments/files/26834074/Test.call.Between.MS.Teams.and.freePBX.pdf)
 
-1. Open Teams as User A
+1. Open Microsip as Extension 101
 2. Go to **Calls → Dial Pad**
-3. Dial `+15550102`
-4. User B should receive the incoming call
+3. Dial `+15550101`
+4. Teamsuser1 should receive the incoming call in Teams
 
 ---
 
