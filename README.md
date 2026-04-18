@@ -460,16 +460,103 @@ Navigate to **Signaling & Media → SBC → Classification**:
 | Source Transport Type | `Any` | 
 | Source IP Group | `FreePBX IP Group` |
 
-### 4.11 IP-to-IP Routing
+### 4.13 IP-to-IP Routing
 
 Navigate to **Signaling & Media → SBC → Routing → IP-to-IP Routing**:
 
-| Index | Name | Source IP Group | Destination IP Group |
-|---|---|---|---|
-| 10 | `IP-PBX → ITSP` | `IP-PBX` | `ITSP` |
-| 20 | `ITSP → IP-PBX` | `ITSP` | `IP-PBX` |
+**Terminate Options:**
 
-### 4.12 Media Security
+| Field | Value |
+|---|---|
+| Name | `Terminate Options` |
+| Source IP Group | `Any` |
+| Request Type | `OPTIONS` |
+| ReRoute IP Group | `Any` | 
+| Destination Type | `Dest Address` |
+| Destination Address | `internal` |
+
+**Teams Refer:**
+
+| Field | Value |
+|---|---|
+| Name | `Teams refer` |
+| Source IP Group | `Any` |
+| Call Trigger | `REFER` |
+| ReRoute IP Group | `Any` | 
+| Destination Type | `Request URI` |
+| Destination IP Group | `Teams IP Group` |
+
+**Teams to FreePBX:**
+
+| Field | Value |
+|---|---|
+| Name | `Teams to FreePBX` |
+| Source IP Group | `Teams IP Group` |
+| Request Type | `INVITE` |
+| ReRoute IP Group | `Any` | 
+| Destination Type | `IP Group` |
+| Destination IP Group | `Teams IP Group` |
+
+**FreePBX to teams:**
+
+| Field | Value |
+|---|---|
+| Name | `FreePBX to teams` |
+| Source IP Group | `FreePBX IP Group` |
+| Request Type | `INVITE` |
+| ReRoute IP Group | `Any` | 
+| Destination Type | `IP Group` |
+| Destination IP Group | `Teams IP Group` |
+
+### 4.13 Message Manipulation
+
+Navigate to **Signaling & Media → MESSAGE MANIPULATION → Message Manipulation**:
+
+**Remove PAI:**
+
+| Field | Value |
+|---|---|
+| Name | `Remove PAI` |
+| Manipulation Set ID | `1` |
+| Row Role | `Use Current Condition` |
+| Action Subject | `Header.P-Asserted-Identity` | 
+| Action Type | `Remove` |
+
+**Change RURI host to FreePBX:**
+
+| Field | Value |
+|---|---|
+| Name | `Change RURI host to FreePBX` |
+| Manipulation Set ID | `4` |
+| Row Role | `Use Current Condition` |
+| Action Subject | `Header.Request-URI.URL.Host` | 
+| Action Type | `Modify` |
+| Action Value | `Param.Message.Address.Dst.IP` |
+| Message Type | `Any.Request` |
+
+**Remove Privacy Header:**
+
+| Field | Value |
+|---|---|
+| Name | `Remove Privacy Header` |
+| Manipulation Set ID | `4` |
+| Row Role | `Use Current Condition` |
+| Action Subject | `Header.Privacy` | 
+| Action Type | `Remove` |
+| Condition | `Header.Privacy exists and Header.from.URL !contains 'anonymous'` |
+
+**Remove HistoryInfo:**
+
+| Field | Value |
+|---|---|
+| Name | `Remove HistoryInfo` |
+| Manipulation Set ID | `4` |
+| Row Role | `Use Current Condition` |
+| Action Subject | `Header.History-Info.1` | 
+| Action Type | `Remove` |
+| Condition | `Header.History-Info.1 exists` |
+
+### 4.14 Media Security
 
 Navigate to **Signaling & Media → Media → Media Security**:
 
