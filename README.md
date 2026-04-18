@@ -741,6 +741,18 @@ Navigate to **Signaling & Media → SBC → Manipulation → Outbound Manipulati
 
 ### Prerequisites
 
+1. Login to FreePBX Admin UI → Admin → Module Admin
+2. Ensure these are installed and enabled:
+3. • SIP Settings ✅ 
+   • Trunks ✅ 
+   • Inbound Routes ✅ 
+   • Outbound Routes ✅ 
+   • Extensions ✅ 
+4. After making changes in each page, Submit and Apply config.
+
+
+### Prerequisites
+
 Login to FreePBX Admin UI → Admin → Module Admin
 Ensure these are installed and enabled:
 • SIP Settings ✅ 
