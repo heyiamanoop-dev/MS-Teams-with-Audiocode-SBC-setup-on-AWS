@@ -508,7 +508,7 @@ Navigate to **Signaling & Media → SBC → Routing → IP-to-IP Routing**:
 | Destination Type | `IP Group` |
 | Destination IP Group | `Teams IP Group` |
 
-### 4.13 Message Manipulation
+### 4.14 Message Manipulation
 
 Navigate to **Signaling & Media → MESSAGE MANIPULATION → Message Manipulation**:
 
@@ -556,7 +556,7 @@ Navigate to **Signaling & Media → MESSAGE MANIPULATION → Message Manipulatio
 | Action Type | `Remove` |
 | Condition | `Header.History-Info.1 exists` |
 
-### 4.14 Message Conditions
+### 4.15 Message Conditions
 
 Navigate to **Signaling & Media → MESSAGE MANIPULATION → Message Conditions**:
 
@@ -565,7 +565,7 @@ Navigate to **Signaling & Media → MESSAGE MANIPULATION → Message Conditions*
 | Name | `Teams-contact` |
 | Condition | `Header.Contact.URL.Host contains 'pstnhub.microsoft.com'` |
 
-### 4.15 Media Security
+### 4.16 Media Security
 
 Navigate to **Signaling & Media → Media → Media Security**:
 
@@ -574,10 +574,34 @@ Navigate to **Signaling & Media → Media → Media Security**:
 | Media Security | `Enable` |
 | Media Security Behavior | `Mandatory` |
 
-### 4.11 Save Configuration
+### 4.17 Manipulation
+
+Navigate to **Signaling & Media → SBC → Manipulation → Inbound Manipulation**:
+
+| Field | Value |
+|---|---|
+| Name | `Teams to FreePBX` |
+| Source IP Group | `Teams IP Group` |
+| Manipulated Item | `Destination` |
+| Remove From Left | `2` |
+
+Navigate to **Signaling & Media → SBC → Manipulation → Outbound Manipulation**:
+
+| Field | Value |
+|---|---|
+| Name | `Teams to FreePBX` |
+| Source IP Group | `Teams IP Group` |
+| Destination IP Group | `FreePBX IP Group` |
+| ReRoute IP Group | `Any` |
+| Manipulated Item | `Destination URI` |
+| Remove From Left | `2` |
+
+### 4.18 Save Configuration
 
 > ⚠️ AudioCodes does NOT auto-save. Always click **Save** (top right) after changes.
 > The Save button turns orange when there are unsaved changes.
+> Check the Topology view and see if the configuration is properly arranged for both Teams and FreePBX.
+> Once the FreePBX and MS Teams are configured the IP Group server should show 'Green', which indicates the OPTIONS and its response 200 OK is going to and fro from both direct on each servers.
 
 ---
 
