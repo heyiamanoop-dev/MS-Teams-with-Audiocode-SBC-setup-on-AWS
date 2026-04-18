@@ -750,18 +750,6 @@ Navigate to **Signaling & Media → SBC → Manipulation → Outbound Manipulati
    • Extensions ✅ 
 4. After making changes in each page, Submit and Apply config.
 
-
-### Prerequisites
-
-Login to FreePBX Admin UI → Admin → Module Admin
-Ensure these are installed and enabled:
-• SIP Settings ✅ 
-• Trunks ✅ 
-• Inbound Routes ✅ 
-• Outbound Routes ✅ 
-• Extensions ✅ 
-After making changes in each page, Submit and Apply config.
-
 ### 7.1 Asterisk SIP Settings
 
 Go to **Settings → Asterisk SIP Settings → General Settings**:
@@ -779,6 +767,60 @@ Then, ** SIP Settings[chan_pjsip] -> Under 0.0.0.0 (udp)**:
 | Domain the transport comes from | `mylab-sbc.ddns.net` - FQDN of SBC|
 | Local network | `172.31.0.0/16` |
 
+Submit and Apply config.
+
+### 7.2 Add Trunk
+
+Go to **Connectivity → Trunks → Add Trunk → Add SIP (chan_pjsip) Trunk **:
+
+| Field | Value |
+|---|---|
+| Trunk Name | `AudioCodes-SBC` |
+
+Then, ** pjsip settings -> General**:
+
+| Field | Value |
+|---|---|
+| SIP Server | `172.31.9.171` - IP of SBC|
+| SIP Server Port | `5066` |
+| Context | `from-pstn` |
+| Transport | `0.0.0.0-udp` |
+
+Then, ** pjsip settings -> Advanced**:
+
+| Field | Value |
+|---|---|
+| From Domain | `172.31.9.171` - IP of SBC|
+| Direct Media | YES |
+| Rewrite Contact | YES |
+| Media Encryption | `None` |
+
+Submit and Apply config.
+
+### 7.3 Create Extensions (for Testing)
+
+Go to **Applications → Extensions → Add Extensions → Add PJSIP Extension → General**:
+
+| Field | Value |
+|---|---|
+| User Extensiom | `101`|
+| Display Name | `Teamsuser1`|
+| Secret | Password for Microsip softphone |
+| Rewrite Contact | YES |
+| Media Encryption | `None` |
+
+Then, ** PJSIP Extension -> Advanced**:
+
+| Field | Value |
+|---|---|
+| Transport | `0.0.0.0-udp`|
+| Dial | `PJSIP/101` |
+| Rewrite Contact | YES |
+| Force rport | YES |
+| Media Encryption | `None` |
+| Direct Media | No |
+
+Do the same for another extension with Display Name : Teamsuser2 with user extension 102, Then Submit and Apply config.
 
 ---
 ## Phase 8 — Verification and Testing
