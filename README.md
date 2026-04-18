@@ -206,11 +206,140 @@ After successful generation, you will have:
 
 ---
 
-## Phase 4 — AudioCodes SBC Configuration
+## Phase 4 — Microsoft 365 Setup
+
+### 4.1 Get Microsoft 365 E5 Trial
+
+1. Go to **https://admin.microsoft.com → Billing → Purchase services**
+2. Search **"Microsoft 365 E5"**
+3. Click **"Start free trial"** (30 days, 25 licenses)
+4. Confirm trial activation
+
+> ⚠️ **Do NOT use M365 Business Standard** — it does not include Phone System (MCOEV).
+> E5 includes Phone System built-in. No separate Teams Phone license needed.
+
+### 4.2 Create Test Users (check -> MS Teams Active users.png)
+
+1. Go to **Admin Center → Users → Active Users → Add a user**
+2. Create two users:
+   - `usera@yourtenantname.onmicrosoft.com`
+   - `userb@yourtenantname.onmicrosoft.com`
+
+### 4.3 Assign E5 License to Users
+
+1. Go to **Users → Active Users → click user**
+2. Click **Licenses and apps** tab
+3. Check **Microsoft 365 E5**
+4. Click **Save changes**
+5. Repeat for second user
+
+### 4.4 Add Domain to M365 (Check -> Adding Domain to 365.png)
+
+1. Go to **Settings → Domains → Add Domain**
+2. Enter `mylab-sbc.ddns.net`
+3. Choose **TXT verification**  
+4. Add the TXT record(refer -> NOIP DNS config.png) in No-IP (same process as Let's Encrypt) 
+5. Click **Verify**
+
+> ⚠️ You only need the TXT record verified. MX and CNAME errors for
+> Exchange/autodiscover can be ignored — they are email-related only.
+
+---
+
+## Phase 5 — Teams Direct Routing via PowerShell
+
+### 5.1 Install and Connect
+
+```powershell
+# Install Teams module
+Install-Module -Name MicrosoftTeams -Force -AllowClobber
+
+# Import module
+Import-Module MicrosoftTeams
+
+# Connect (use device auth if browser popup fails)
+Connect-MicrosoftTeams -UseDeviceAuthentication
+```
+
+### 5.2 Register SBC
+
+```powershell
+New-CsOnlinePSTNGateway `
+  -Fqdn "mylab-sbc.ddns.net" `
+  -SipSignalingPort 5061 `
+  -ForwardCallHistory $true `
+  -ForwardPai $true `
+  -SendSipOptions $true `
+  -MaxConcurrentSessions 10 `
+  -Enabled $true `
+  -MediaBypass $false
+```
+
+### 5.3 Create PSTN Usage
+
+```powershell
+Set-CsOnlinePstnUsage -Identity Global -Usage @{Add="LabUsage"}
+```
+
+### 5.4 Create Voice Routes
+
+```powershell
+# Route for extension 101
+New-CsOnlineVoiceRoute `
+  -Identity "Route-Ext101" `
+  -NumberPattern "^\+15550101$" `
+  -OnlinePstnGatewayList "mylab-sbc.ddns.net" `
+  -Priority 1 `
+  -OnlinePstnUsages "LabUsage"
+
+# Route for extension 102
+New-CsOnlineVoiceRoute `
+  -Identity "Route-Ext102" `
+  -NumberPattern "^\+15550102$" `
+  -OnlinePstnGatewayList "mylab-sbc.ddns.net" `
+  -Priority 2 `
+  -OnlinePstnUsages "LabUsage"
+```
+
+### 5.5 Create Voice Routing Policy
+
+```powershell
+New-CsOnlineVoiceRoutingPolicy `
+  -Identity "LabVoicePolicy" `
+  -OnlinePstnUsages "LabUsage"
+```
+
+### 5.6 Assign Numbers to Users
+
+```powershell
+# User A
+Set-CsPhoneNumberAssignment `
+  -Identity "usera@yourtenantname.onmicrosoft.com" `
+  -PhoneNumber "+15550101" `
+  -PhoneNumberType DirectRouting
+
+Grant-CsOnlineVoiceRoutingPolicy `
+  -Identity "usera@yourtenantname.onmicrosoft.com" `
+  -PolicyName "LabVoicePolicy"
+
+# User B
+Set-CsPhoneNumberAssignment `
+  -Identity "userb@yourtenantname.onmicrosoft.com" `
+  -PhoneNumber "+15550102" `
+  -PhoneNumberType DirectRouting
+
+Grant-CsOnlineVoiceRoutingPolicy `
+  -Identity "userb@yourtenantname.onmicrosoft.com" `
+  -PolicyName "LabVoicePolicy"
+```
+
+---
+
+## Phase 6 — AudioCodes SBC Configuration
 
 You can watch a youtube video for direct configuration for MS teams. Link: https://www.youtube.com/watch?v=reUN9CNPVv4
 
-### 4.1 Initial Setup Wizard
+### 6.1 Initial Setup Wizard
 
 After first login, complete the Setup Wizard:
 
@@ -223,7 +352,7 @@ After first login, complete the Setup Wizard:
 | Web Interface | HTTPS |
 | CLI Interface | SSH |
 
-### 4.2 IP Network Interface
+### 6.2 IP Network Interface
 
 Since, we are using VPC to connect both FreePBX and SBC, no need to create for WAN network for MS Teams.  
 
@@ -237,7 +366,7 @@ Navigate to **IP Network → IP Interfaces**:
 | Primary DNS | `8.8.8.8` |
 | Application Type | `OAMP + Media + Control` |
 
-### 4.3 NAT Translation
+### 6.3 NAT Translation
 
 Navigate to **IP Network → NAT Translation → Add**:
 
@@ -246,7 +375,7 @@ Navigate to **IP Network → NAT Translation → Add**:
 | 1 | eth0 | `<ElasticIP of SBC>` | 7000-7999 (RTP) |
 | 2 | eth0 | `<ElasticIP of SBC>` | 5061-5061 (SIP) |
 
-### 4.4 Upload TLS Certificate (See step 3.5)
+### 6.4 Upload TLS Certificate (See step 3.5)
 
 1. Go to **IP Network → Security → TLS Contexts → #0 [default]**
 2. Click **"Change Certificate >>"**
@@ -257,7 +386,7 @@ Navigate to **IP Network → NAT Translation → Add**:
    - CN = `mylab-sbc.ddns.net`
    - Issuer = `Let's Encrypt`
 
-### 4.5 Transport Settings
+### 6.5 Transport Settings
 
 Navigate to **Signaling & Media → SIP Definitions → Transport Settings**:
 
@@ -268,7 +397,7 @@ Navigate to **Signaling & Media → SIP Definitions → Transport Settings**:
 | SIP Destination Port | `5061` |
 | SIP NAT Detection | `Enable` |
 
-### 4.6 SIP Interface
+### 6.6 SIP Interface
 
 Navigate to **Signaling & Media → CORE ENTITIES → SIP Interfaces**:
 
@@ -298,7 +427,7 @@ Navigate to **Signaling & Media → CORE ENTITIES → SIP Interfaces**:
 | TLS Context Name | `default` |
 | Topology Location | `Up` |
 
-### 4.7 Media Realms
+### 6.7 Media Realms
 
 Navigate to **Signaling & Media → CORE ENTITIES → Proxy Sets**:
 
@@ -322,7 +451,7 @@ Navigate to **Signaling & Media → CORE ENTITIES → Proxy Sets**:
 | UDP Port Range Start | `8000` |
 | Number Of Media Session Legs | `100` |
 
-### 4.8 Proxy Sets
+### 6.8 Proxy Sets
 
 Navigate to **Signaling & Media → CORE ENTITIES → Proxy Sets**:
 
@@ -355,7 +484,7 @@ Navigate to **Signaling & Media → CORE ENTITIES → Proxy Sets**:
 | Proxy Hot Swap Mode | `Disable` |	
 | Proxy Load Balancing Method | `Disable` |
 
-### 4.9 IP Groups
+### 6.9 IP Groups
 
 Navigate to **Signaling & Media → CORE ENTITIES → IP Groups**:
 
@@ -392,7 +521,7 @@ Navigate to **Signaling & Media → CORE ENTITIES → IP Groups**:
 | Teams Direct Routing Mode | `Disable` |
 | Teams Local Media Optimization Initial Behavior | `DirectMedia` |
 
-### 4.10 IP Profiles
+### 6.10 IP Profiles
 
 Navigate to **Signaling & Media → CODERS & PROFILES → IP Profiles**:
 
@@ -427,13 +556,13 @@ Navigate to **Signaling & Media → CODERS & PROFILES → IP Profiles**:
 | Remote Replaces Mode | `Handle Locally` |
 | Remote 3xx Mode | `Handle Locally` |
 
-### 4.11 Coders Groups
+### 6.11 Coders Groups
 
 Navigate to **Signaling & Media → CODERS & PROFILES → Coders Groups**:
 
 ** Select which codecs are supported, here its G711 ulaw and alaw**
 
-### 4.12 Classifications
+### 6.12 Classifications
 
 Navigate to **Signaling & Media → SBC → Classification**:
 
@@ -460,7 +589,7 @@ Navigate to **Signaling & Media → SBC → Classification**:
 | Source Transport Type | `Any` | 
 | Source IP Group | `FreePBX IP Group` |
 
-### 4.13 IP-to-IP Routing
+### 6.13 IP-to-IP Routing
 
 Navigate to **Signaling & Media → SBC → Routing → IP-to-IP Routing**:
 
@@ -508,7 +637,7 @@ Navigate to **Signaling & Media → SBC → Routing → IP-to-IP Routing**:
 | Destination Type | `IP Group` |
 | Destination IP Group | `Teams IP Group` |
 
-### 4.14 Message Manipulation
+### 6.14 Message Manipulation
 
 Navigate to **Signaling & Media → MESSAGE MANIPULATION → Message Manipulation**:
 
@@ -556,7 +685,7 @@ Navigate to **Signaling & Media → MESSAGE MANIPULATION → Message Manipulatio
 | Action Type | `Remove` |
 | Condition | `Header.History-Info.1 exists` |
 
-### 4.15 Message Conditions
+### 6.15 Message Conditions
 
 Navigate to **Signaling & Media → MESSAGE MANIPULATION → Message Conditions**:
 
@@ -565,7 +694,7 @@ Navigate to **Signaling & Media → MESSAGE MANIPULATION → Message Conditions*
 | Name | `Teams-contact` |
 | Condition | `Header.Contact.URL.Host contains 'pstnhub.microsoft.com'` |
 
-### 4.16 Media Security
+### 6.16 Media Security
 
 Navigate to **Signaling & Media → Media → Media Security**:
 
@@ -574,7 +703,7 @@ Navigate to **Signaling & Media → Media → Media Security**:
 | Media Security | `Enable` |
 | Media Security Behavior | `Mandatory` |
 
-### 4.17 Manipulation
+### 6.17 Manipulation
 
 Navigate to **Signaling & Media → SBC → Manipulation → Inbound Manipulation**:
 
@@ -596,141 +725,12 @@ Navigate to **Signaling & Media → SBC → Manipulation → Outbound Manipulati
 | Manipulated Item | `Destination URI` |
 | Remove From Left | `2` |
 
-### 4.18 Save Configuration
+### 6.18 Save Configuration
 
 > ⚠️ AudioCodes does NOT auto-save. Always click **Save** (top right) after changes.
 > The Save button turns orange when there are unsaved changes.
 > Check the Topology view and see if the configuration is properly arranged for both Teams and FreePBX.
 > Once the FreePBX and MS Teams are configured the IP Group server should show 'Green', which indicates the OPTIONS and its response 200 OK is going to and fro from both direct on each servers.
-
----
-
-## Phase 5 — Microsoft 365 Setup
-
-### 5.1 Get Microsoft 365 E5 Trial
-
-1. Go to **https://admin.microsoft.com → Billing → Purchase services**
-2. Search **"Microsoft 365 E5"**
-3. Click **"Start free trial"** (30 days, 25 licenses)
-4. Confirm trial activation
-
-> ⚠️ **Do NOT use M365 Business Standard** — it does not include Phone System (MCOEV).
-> E5 includes Phone System built-in. No separate Teams Phone license needed.
-
-### 5.2 Create Test Users (check -> MS Teams Active users.png)
-
-1. Go to **Admin Center → Users → Active Users → Add a user**
-2. Create two users:
-   - `usera@yourtenantname.onmicrosoft.com`
-   - `userb@yourtenantname.onmicrosoft.com`
-
-### 5.3 Assign E5 License to Users
-
-1. Go to **Users → Active Users → click user**
-2. Click **Licenses and apps** tab
-3. Check **Microsoft 365 E5**
-4. Click **Save changes**
-5. Repeat for second user
-
-### 5.4 Add Domain to M365 (Check -> Adding Domain to 365.png)
-
-1. Go to **Settings → Domains → Add Domain**
-2. Enter `mylab-sbc.ddns.net`
-3. Choose **TXT verification**  
-4. Add the TXT record(refer -> NOIP DNS config.png) in No-IP (same process as Let's Encrypt) 
-5. Click **Verify**
-
-> ⚠️ You only need the TXT record verified. MX and CNAME errors for
-> Exchange/autodiscover can be ignored — they are email-related only.
-
----
-
-## Phase 6 — Teams Direct Routing via PowerShell
-
-### 6.1 Install and Connect
-
-```powershell
-# Install Teams module
-Install-Module -Name MicrosoftTeams -Force -AllowClobber
-
-# Import module
-Import-Module MicrosoftTeams
-
-# Connect (use device auth if browser popup fails)
-Connect-MicrosoftTeams -UseDeviceAuthentication
-```
-
-### 6.2 Register SBC
-
-```powershell
-New-CsOnlinePSTNGateway `
-  -Fqdn "mylab-sbc.ddns.net" `
-  -SipSignalingPort 5061 `
-  -ForwardCallHistory $true `
-  -ForwardPai $true `
-  -SendSipOptions $true `
-  -MaxConcurrentSessions 10 `
-  -Enabled $true `
-  -MediaBypass $false
-```
-
-### 6.3 Create PSTN Usage
-
-```powershell
-Set-CsOnlinePstnUsage -Identity Global -Usage @{Add="LabUsage"}
-```
-
-### 6.4 Create Voice Routes
-
-```powershell
-# Route for extension 101
-New-CsOnlineVoiceRoute `
-  -Identity "Route-Ext101" `
-  -NumberPattern "^\+15550101$" `
-  -OnlinePstnGatewayList "mylab-sbc.ddns.net" `
-  -Priority 1 `
-  -OnlinePstnUsages "LabUsage"
-
-# Route for extension 102
-New-CsOnlineVoiceRoute `
-  -Identity "Route-Ext102" `
-  -NumberPattern "^\+15550102$" `
-  -OnlinePstnGatewayList "mylab-sbc.ddns.net" `
-  -Priority 2 `
-  -OnlinePstnUsages "LabUsage"
-```
-
-### 6.5 Create Voice Routing Policy
-
-```powershell
-New-CsOnlineVoiceRoutingPolicy `
-  -Identity "LabVoicePolicy" `
-  -OnlinePstnUsages "LabUsage"
-```
-
-### 6.6 Assign Numbers to Users
-
-```powershell
-# User A
-Set-CsPhoneNumberAssignment `
-  -Identity "usera@yourtenantname.onmicrosoft.com" `
-  -PhoneNumber "+15550101" `
-  -PhoneNumberType DirectRouting
-
-Grant-CsOnlineVoiceRoutingPolicy `
-  -Identity "usera@yourtenantname.onmicrosoft.com" `
-  -PolicyName "LabVoicePolicy"
-
-# User B
-Set-CsPhoneNumberAssignment `
-  -Identity "userb@yourtenantname.onmicrosoft.com" `
-  -PhoneNumber "+15550102" `
-  -PhoneNumberType DirectRouting
-
-Grant-CsOnlineVoiceRoutingPolicy `
-  -Identity "userb@yourtenantname.onmicrosoft.com" `
-  -PolicyName "LabVoicePolicy"
-```
 
 ---
 
