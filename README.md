@@ -834,7 +834,7 @@ Go to **Connectivity → Inbound route → Add Inbound route →  General**:
 
 Submit and Apply config.
 
-### 7.4 Create Outbound route
+### 7.5 Create Outbound route
 
 Go to **Connectivity → Outbound route → Add Outbound route →  Route Settings**:
 
