@@ -734,19 +734,19 @@ Navigate to **Signaling & Media → SBC → Manipulation → Outbound Manipulati
 
 ---
 
-## Phase 8 — FreePBX configuration (For FreePBX Setup refer the link: https://github.com/heyiamanoop-dev/FreePBX-16-installation-on-AWS-EC2-instance)
+### Phase 7 — FreePBX configuration (For FreePBX Setup refer the link: https://github.com/heyiamanoop-dev/FreePBX-16-installation-on-AWS-EC2-instance)
 
 > ⚠️ Use FreePBX 16 with Asterisk 18 with Macros, v20 doesn't support macros so it need to be downgraded to v18.
 > How to downgrade from V20 to v18 is provided in the documents section in FreePBX setup.
 
-Login to FreePBX Admin UI → Admin → Module Admin 
-Ensure these are installed and enabled: 
-• SIP Settings ✅ 
-• Trunks ✅ 
-• Inbound Routes ✅ 
-• Outbound Routes ✅ 
-• Extensions ✅ 
-After making changes in each page, Submit and Apply config. 
+**Login to FreePBX Admin UI → Admin → Module Admin**
+**Ensure these are installed and enabled:**
+**• SIP Settings ✅ **
+**• Trunks ✅ **
+**• Inbound Routes ✅ **
+**• Outbound Routes ✅ **
+**• Extensions ✅ **
+**After making changes in each page, Submit and Apply config.**
 
 
 
