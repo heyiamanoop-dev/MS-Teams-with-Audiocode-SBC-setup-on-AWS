@@ -333,6 +333,21 @@ Grant-CsOnlineVoiceRoutingPolicy `
   -PolicyName "LabVoicePolicy"
 ```
 
+### 5.7 Add Voice Route in Teams for +91101 Pattern
+
+```powershell
+Connect-MicrosoftTeams -UseDeviceAuthentication
+
+# Add a new voice route for +91XXX pattern (extensions)
+New-CsOnlineVoiceRoute -Identity "Route-Extensions" `
+  -NumberPattern "^\+91\d+$" `
+  -OnlinePstnGatewayList "mylab-sbc.ddns.net" `
+  -Priority 1 `
+  -OnlinePstnUsages "LabUsage"
+
+# Verify it was created
+Get-CsOnlineVoiceRoute | Format-Table Identity, NumberPattern, OnlinePstnGatewayList
+```
 ---
 
 ## Phase 6 — AudioCodes SBC Configuration
@@ -624,7 +639,7 @@ Navigate to **Signaling & Media → SBC → Routing → IP-to-IP Routing**:
 | Request Type | `INVITE` |
 | ReRoute IP Group | `Any` | 
 | Destination Type | `IP Group` |
-| Destination IP Group | `Teams IP Group` |
+| Destination IP Group | `FreePBX IP Group` |
 
 **FreePBX to teams:**
 
@@ -712,7 +727,7 @@ Navigate to **Signaling & Media → SBC → Manipulation → Inbound Manipulatio
 | Name | `Teams to FreePBX` |
 | Source IP Group | `Teams IP Group` |
 | Manipulated Item | `Destination` |
-| Remove From Left | `2` |
+| Remove From Left | `1` |
 
 Navigate to **Signaling & Media → SBC → Manipulation → Outbound Manipulation**:
 
